@@ -1,4 +1,299 @@
 
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14532d">
+<title>Drame Sow</title>
+
+<style>
+:root{
+  --g:#14532d;
+  --g2:#19834b;
+  --pale:#e9f7ed;
+  --bg:#f4f7f4;
+  --ink:#17251c;
+  --muted:#718078;
+  --line:#e3ebe5;
+  --red:#b42318;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:16px system-ui,-apple-system,Segoe UI,Arial
+}
+.wrap{max-width:1000px;margin:auto;padding:14px}
+.head{display:flex;align-items:center;gap:12px;margin:5px 0 16px}
+.logo{
+  width:48px;height:48px;background:var(--g);color:#fff;
+  border-radius:15px;display:grid;place-items:center;
+  font-size:20px;font-weight:900
+}
+.head h1{margin:0;font-size:21px}
+.head p{margin:2px 0;color:var(--muted);font-size:12px}
+.nav{
+  display:flex;gap:7px;overflow:auto;background:#e8efe9;
+  padding:6px;border-radius:14px;margin-bottom:16px
+}
+.nav button{
+  white-space:nowrap;border:0;background:transparent;
+  padding:11px 14px;border-radius:10px;color:#52635a;font-weight:700
+}
+.nav button.on{
+  background:#fff;color:var(--g);box-shadow:0 3px 12px #0001
+}
+.page{display:none}
+.page.on{display:block}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:16px;margin-bottom:13px;box-shadow:0 4px 16px #173b2408
+}
+.title{font-size:19px;font-weight:800;margin:4px 0 12px}
+.sub{font-size:13px;color:var(--muted);margin:-5px 0 14px}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.metric{
+  padding:14px;border-radius:14px;background:#fff;
+  border:1px solid var(--line)
+}
+.metric small{color:var(--muted);font-weight:700}
+.metric b{display:block;font-size:24px;margin-top:5px}
+.green{color:var(--g)}
+.red{color:var(--red)}
+.btn{
+  background:var(--g);color:#fff;border:0;border-radius:12px;
+  padding:13px 16px;font-weight:800;cursor:pointer
+}
+.light{background:var(--pale);color:var(--g)}
+.danger{background:#feeceb;color:var(--red)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btnrow .btn{flex:1}
+.field{margin:10px 0}
+.field label{
+  display:block;font-size:13px;font-weight:750;
+  margin-bottom:6px;color:#53635a
+}
+.field input,.field select{
+  width:100%;border:1px solid #d8e2da;border-radius:11px;
+  padding:13px;font-size:16px;background:white;color:var(--ink)
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pricegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.price{
+  padding:17px 5px;border-radius:13px;background:var(--pale);
+  color:var(--g);font-size:19px;font-weight:900;border:2px solid transparent
+}
+.price:active{border-color:var(--g)}
+.price.selected{background:var(--g);color:#fff}
+.hint{font-size:12px;color:var(--muted);line-height:1.5}
+.line{height:1px;background:var(--line);margin:13px 0}
+.stockrow{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:12px 0;border-bottom:1px solid var(--line)
+}
+.stockrow:last-child{border:0}
+.stockrow b{display:block}
+.stockrow small{color:var(--muted)}
+.qty{font-weight:850;color:var(--g);text-align:right}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{
+  text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);
+  font-size:13px
+}
+th{color:var(--muted);background:#f8faf8}
+.tag{
+  display:inline-block;padding:4px 8px;background:var(--pale);
+  color:var(--g);border-radius:30px;font-size:11px;font-weight:800
+}
+.alert{
+  background:#fff7df;color:#795b0c;padding:11px;
+  border-radius:11px;font-size:13px;margin-bottom:10px
+}
+.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+.hidden{display:none!important}
+.foot{text-align:center;color:var(--muted);font-size:11px;padding:15px}
+@media(min-width:700px){
+  .metrics{grid-template-columns:repeat(4,1fr)}
+  .pricegrid{grid-template-columns:repeat(4,1fr)}
+  .wrap{padding:22px}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header class="head">
+  <div class="logo">DS</div>
+  <div>
+    <h1>DRAME SOW</h1>
+    <p>Gestion simple de la boutique</p>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="on" data-p="home">Accueil</button>
+  <button data-p="sales">Ventes</button>
+  <button data-p="prep">Préparation</button>
+  <button data-p="stock">Stock</button>
+  <button data-p="expenses">Dépenses</button>
+  <button data-p="history">Historique</button>
+</nav>
+
+<!-- ACCUEIL -->
+<section id="home" class="page on">
+  <div class="title">Aujourd'hui</div>
+
+  <div class="metrics">
+    <div class="metric">
+      <small>VENTES DU JOUR</small>
+      <b class="green" id="todaySales">0 F</b>
+    </div>
+    <div class="metric">
+      <small>DÉPENSES DU JOUR</small>
+      <b class="red" id="todayExpenses">0 F</b>
+    </div>
+    <div class="metric">
+      <small>RÉSULTAT DU JOUR</small>
+      <b id="todayResult">0 F</b>
+    </div>
+    <div class="metric">
+      <small>LAIT CAILLÉ RESTANT</small>
+      <b id="milkRemain">0 L</b>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:13px">
+    <div class="title">Actions rapides</div>
+    <div class="btnrow">
+      <button class="btn" onclick="go('sales')">＋ Enregistrer ventes</button>
+      <button class="btn light" onclick="go('prep')">＋ Préparer lait</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Préparation du jour</div>
+    <div id="homePrep" class="empty">Aucune préparation aujourd'hui</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Alertes de stock</div>
+    <div id="homeAlerts" class="empty">Aucune alerte</div>
+  </div>
+</section>
+
+<!-- VENTES -->
+<section id="sales" class="page">
+  <div class="title">Enregistrer les ventes</div>
+  <p class="sub">À la fin de la journée, saisissez une seule somme pour chaque catégorie vendue.</p>
+
+  <div class="card">
+    <div class="title">Lait caillé vendu aujourd'hui</div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>Montant total vendu (FCFA)</label>
+        <input id="milkMoney" type="number" min="0" placeholder="Ex. 10 000">
+      </div>
+      <div class="field">
+        <label>Quantité vendue (litres)</label>
+        <input id="milkSold" type="number" min="0" step="0.1" placeholder="Ex. 8">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Quantité restante dans les préparations (litres)</label>
+      <input id="milkLeft" type="number" readonly>
+    </div>
+
+    <div class="hint" id="milkInfo">
+      Préparez d'abord votre lait dans l'onglet Préparation.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Autres ventes du jour</div>
+    <p class="hint">
+      Pour les mélanges, ajoutez les litres de lait utilisés dans la quantité
+      vendue de lait caillé ci-dessus.
+    </p>
+
+    <div class="grid2">
+      <div class="field">
+        <label>Couscous (FCFA)</label>
+        <input id="vCouscous" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Thi akri (FCFA)</label>
+        <input id="vThi" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Mélange lait + thiakri (FCFA)</label>
+        <input id="vMixThi" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Mélange lait + couscous (FCFA)</label>
+        <input id="vMixCous" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Mélange lait + biscuit (FCFA)</label>
+        <input id="vMixBisc" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Eau (FCFA)</label>
+        <input id="vWater" type="number" min="0" placeholder="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Autres ventes / précision (facultatif)</label>
+      <input id="vOtherNote" placeholder="Ex. biscuits seuls">
+    </div>
+
+    <button class="btn" onclick="saveDailySales()">Enregistrer les ventes du jour</button>
+  </div>
+
+  <div class="card">
+    <div class="title">Résumé enregistré aujourd'hui</div>
+    <div id="salesSummary" class="empty">Aucune vente enregistrée</div>
+  </div>
+</section>
+
+<!-- PREPARATION -->
+<section id="prep" class="page">
+  <div class="title">Préparer le lait caillé</div>
+  <p class="sub">
+    À chaque préparation, indiquez la quantité produite et les ingrédients utilisés.
+    Le stock diminue automatiquement.
+  </p>
+
+  <div class="card">
+    <div class="field">
+      <label>Quantité de lait caillé préparée (litres)</label>
+      <input id="prepLitres" type="number" min="0.1" step="0.1" placeholder="Ex. 12">
+    </div>
+
+    <div class="title" style="font-size:16px">Ingrédients utilisés pour cette préparation</div>
+    <div id="recipeFields"></div>
+
+    <button class="btn" onclick="savePreparation()">Valider la préparation</button>
+
+    <p class="hint">
+      Les quantités consommées sont à saisir selon votre recette.
+      L'application ne devine pas les dosages.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="title">Préparations d'aujourd'hui</div>
+    <div id="prepList" class="empty">Aucune préparation</div>
+  </div>
+</section>
+
+<!-- STOCK -->
 <section id="stock" class="page">
   <div class="title">Gestion du stock</div>
   <p class="sub">Ajoute tes achats et choisis l'unité de chaque produit.</p>
@@ -14,8 +309,7 @@
     <div class="grid2">
       <div class="field">
         <label>Quantité achetée</label>
-        <input id="stockQty" type="number" min="0.001"
-          step="0.001" placeholder="Ex. 5">
+        <input id="stockQty" type="number" min="0.001" step="0.001" placeholder="Ex. 5">
       </div>
 
       <div class="field">
@@ -34,7 +328,7 @@
           <option value="bouteille">Bouteille</option>
           <option value="pièce">Pièce</option>
           <option value="unité">Unité</option>
-          <option value="custom">Autre unité</option>
+          <option value="custom">Autre unité...</option>
         </select>
       </div>
     </div>
@@ -44,9 +338,7 @@
       <input id="customUnit" placeholder="Ex. pot, bassine, seau">
     </div>
 
-    <button class="btn" onclick="addStock()">
-      Enregistrer l'achat
-    </button>
+    <button class="btn" onclick="addStock()">Enregistrer l'achat</button>
   </div>
 
   <div class="card">
@@ -73,12 +365,16 @@
         <option value="bouteille">Bouteille</option>
         <option value="pièce">Pièce</option>
         <option value="unité">Unité</option>
+        <option value="custom">Autre unité...</option>
       </select>
     </div>
 
-    <button class="btn light" onclick="addIngredient()">
-      + Ajouter le produit
-    </button>
+    <div class="field hidden" id="newCustomUnitBox">
+      <label>Nom de l'unité personnalisée</label>
+      <input id="newCustomUnit" placeholder="Ex. bassine, pot, seau">
+    </div>
+
+    <button class="btn light" onclick="addIngredient()">＋ Ajouter le produit</button>
   </div>
 
   <div class="card">
@@ -86,3 +382,732 @@
     <div id="stockList"></div>
   </div>
 </section>
+
+<!-- DEPENSES -->
+<section id="expenses" class="page">
+  <div class="title">Enregistrer une dépense</div>
+  <p class="sub">Les dépenses sont suivies séparément du stock.</p>
+
+  <div class="card">
+    <div class="field">
+      <label>Type de dépense</label>
+      <select id="expType">
+        <option>Sac de lait</option>
+        <option>Sac de sucre</option>
+        <option>Paquet biscuit</option>
+        <option>Lait concentré</option>
+        <option>Eau</option>
+        <option>Couscous</option>
+        <option>Mbaxamsa</option>
+        <option>Transport</option>
+        <option>Électricité</option>
+        <option>Autre</option>
+      </select>
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>Montant (FCFA)</label>
+        <input id="expAmount" type="number" min="1" placeholder="Ex. 15 000">
+      </div>
+      <div class="field">
+        <label>Note (facultatif)</label>
+        <input id="expNote" placeholder="Détail">
+      </div>
+    </div>
+
+    <button class="btn" onclick="saveExpense()">Enregistrer dépense</button>
+  </div>
+
+  <div class="card">
+    <div class="title">Dépenses du jour</div>
+    <div id="expList" class="empty">Aucune dépense aujourd'hui</div>
+  </div>
+</section>
+
+<!-- HISTORIQUE -->
+<section id="history" class="page">
+  <div class="title">Historique</div>
+
+  <div class="card">
+    <div class="title">Ventes et dépenses</div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Opération</th>
+            <th>Détail</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody id="historyRows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Sauvegarde</div>
+    <p class="hint">Les données sont conservées sur cet appareil. Faites une sauvegarde régulièrement.</p>
+    <div class="btnrow">
+      <button class="btn light" onclick="backup()">Exporter les données</button>
+      <button class="btn light" onclick="document.getElementById('restore').click()">Importer une sauvegarde</button>
+      <input type="file" id="restore" accept="application/json" hidden onchange="restore(event)">
+    </div>
+  </div>
+</section>
+
+<div class="foot">Drame Sow · Gestion simple · Sauvegarde locale</div>
+</div>
+
+<script>
+/* PRODUITS DE DEPART */
+const defaults = [
+  {id:'milkpowder',name:'Lait en poudre',unit:'kg',qty:0},
+  {id:'sugar',name:'Sucre',unit:'kg',qty:0},
+  {id:'biscuit',name:'Biscuits',unit:'paquet',qty:0},
+  {id:'condensed',name:'Lait concentré',unit:'boîte',qty:0},
+  {id:'water',name:'Eau',unit:'litre',qty:0},
+  {id:'couscous',name:'Couscous',unit:'kg',qty:0},
+  {id:'thiakri',name:'Thi akri / Mbaxamsa',unit:'kg',qty:0}
+];
+
+/* ELEMENTS */
+const $ = id => document.getElementById(id);
+
+const stockItem = $('stockItem');
+const stockQty = $('stockQty');
+const stockUnit = $('stockUnit');
+const stockList = $('stockList');
+const customUnit = $('customUnit');
+const customUnitBox = $('customUnitBox');
+const newIng = $('newIng');
+const newUnit = $('newUnit');
+const newCustomUnit = $('newCustomUnit');
+const newCustomUnitBox = $('newCustomUnitBox');
+
+/* DONNEES */
+let data = loadData();
+
+function loadData(){
+  try{
+    let d = JSON.parse(localStorage.getItem('drameSowSimple') || 'null');
+
+    if(d && Array.isArray(d.ingredients)){
+      d.preps = Array.isArray(d.preps) ? d.preps : [];
+      d.sales = Array.isArray(d.sales) ? d.sales : [];
+      d.expenses = Array.isArray(d.expenses) ? d.expenses : [];
+
+      d.ingredients.forEach(x=>{
+        if(!x.id) x.id = makeId();
+        if(!x.unit) x.unit = 'unité';
+        if(!Number.isFinite(Number(x.qty))) x.qty = 0;
+        x.qty = Number(x.qty);
+      });
+
+      return d;
+    }
+  }catch(e){}
+
+  return {
+    ingredients:structuredClone(defaults),
+    preps:[],
+    sales:[],
+    expenses:[]
+  };
+}
+
+function save(){
+  localStorage.setItem('drameSowSimple',JSON.stringify(data));
+  render();
+}
+
+function makeId(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+}
+
+function today(){
+  const d = new Date();
+  return d.getFullYear()+'-'+
+    String(d.getMonth()+1).padStart(2,'0')+'-'+
+    String(d.getDate()).padStart(2,'0');
+}
+
+function isToday(day){
+  return day === today();
+}
+
+function money(n){
+  return (Number(n)||0).toLocaleString('fr-FR')+' F';
+}
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
+}
+
+/* NAVIGATION */
+function go(page){
+  document.querySelectorAll('.page').forEach(x=>{
+    x.classList.toggle('on',x.id===page);
+  });
+
+  document.querySelectorAll('.nav button').forEach(x=>{
+    x.classList.toggle('on',x.dataset.p===page);
+  });
+
+  render();
+}
+
+document.querySelector('.nav').addEventListener('click',e=>{
+  const b = e.target.closest('[data-p]');
+  if(b) go(b.dataset.p);
+});
+
+/* CALCULS DU JOUR */
+function todaysPrep(){
+  return data.preps.filter(x=>isToday(x.day));
+}
+
+function totalPreparedToday(){
+  return todaysPrep().reduce((n,p)=>n+(Number(p.litres)||0),0);
+}
+
+function salesToday(){
+  return data.sales.filter(x=>isToday(x.day));
+}
+
+function expToday(){
+  return data.expenses.filter(x=>isToday(x.day));
+}
+
+function totalMilkSoldToday(){
+  return salesToday().reduce((n,x)=>n+(Number(x.milkLitres)||0),0);
+}
+
+function milkRemainingToday(){
+  return Math.max(0,totalPreparedToday()-totalMilkSoldToday());
+}
+
+function sumAmounts(items){
+  return items.reduce((n,x)=>n+(Number(x.amount)||0),0);
+}
+
+/* AFFICHAGE GENERAL */
+function render(){
+  renderHome();
+  renderPrep();
+  renderStock();
+  renderExpenses();
+  renderHistory();
+  renderSalesState();
+}
+
+function renderHome(){
+  const sale = sumAmounts(salesToday());
+  const expenses = sumAmounts(expToday());
+
+  $('todaySales').textContent = money(sale);
+  $('todayExpenses').textContent = money(expenses);
+  $('todayResult').textContent = money(sale-expenses);
+  $('milkRemain').textContent =
+    milkRemainingToday().toLocaleString('fr-FR')+' L';
+
+  const preps = todaysPrep();
+  const prepared = totalPreparedToday();
+
+  $('homePrep').innerHTML = preps.length
+    ? `<div class="stockrow">
+         <span>
+           <b>${prepared} litres préparés au total</b>
+           <small>${preps.length} préparation(s) aujourd'hui</small>
+         </span>
+         <span class="qty">${milkRemainingToday()} L restants</span>
+       </div>`
+    : 'Aucune préparation aujourd’hui';
+
+  const low = data.ingredients.filter(x=>Number(x.qty)<=0);
+
+  $('homeAlerts').innerHTML = low.length
+    ? low.map(x=>`
+        <div class="stockrow">
+          <span>${esc(x.name)}</span>
+          <span class="qty red">Épuisé</span>
+        </div>
+      `).join('')
+    : 'Aucune alerte';
+}
+
+/* STOCK ET UNITES */
+function setUnitOption(select,unit){
+  let exists = Array.from(select.options).some(o=>o.value===unit);
+
+  if(!exists){
+    const option = document.createElement('option');
+    option.value = unit;
+    option.textContent = unit;
+    select.insertBefore(option,select.querySelector('[value="custom"]'));
+  }
+
+  select.value = unit;
+}
+
+function renderStock(){
+  const previous = stockItem.value;
+
+  stockItem.innerHTML = data.ingredients.map(x=>
+    `<option value="${esc(x.id)}">${esc(x.name)}</option>`
+  ).join('');
+
+  if(data.ingredients.some(x=>x.id===previous)){
+    stockItem.value = previous;
+  }
+
+  updateStockUnit();
+
+  stockList.innerHTML = data.ingredients.length
+    ? data.ingredients.map(x=>`
+        <div class="stockrow">
+          <span>
+            <b>${esc(x.name)}</b>
+            <small>Unité : ${esc(x.unit)}</small>
+          </span>
+          <span class="qty">${Number(x.qty).toLocaleString('fr-FR')} ${esc(x.unit)}</span>
+        </div>
+      `).join('')
+    : '<div class="empty">Aucun produit dans le stock</div>';
+}
+
+function updateStockUnit(){
+  const item = data.ingredients.find(x=>x.id===stockItem.value);
+
+  if(!item) return;
+
+  setUnitOption(stockUnit,item.unit);
+  customUnit.value = '';
+  customUnitBox.classList.add('hidden');
+}
+
+stockItem.addEventListener('change',updateStockUnit);
+
+stockUnit.addEventListener('change',()=>{
+  customUnitBox.classList.toggle(
+    'hidden',
+    stockUnit.value!=='custom'
+  );
+});
+
+newUnit.addEventListener('change',()=>{
+  newCustomUnitBox.classList.toggle(
+    'hidden',
+    newUnit.value!=='custom'
+  );
+});
+
+/* AJOUTER UN ACHAT */
+function addStock(){
+  const item = data.ingredients.find(x=>x.id===stockItem.value);
+  const qty = Number(stockQty.value);
+
+  let unit = stockUnit.value;
+
+  if(unit==='custom'){
+    unit = customUnit.value.trim();
+  }
+
+  if(!item){
+    alert('Choisissez un produit.');
+    return;
+  }
+
+  if(!Number.isFinite(qty) || qty<=0){
+    alert('Saisissez une quantité valide.');
+    return;
+  }
+
+  if(!unit){
+    alert('Saisissez ou choisissez une unité.');
+    return;
+  }
+
+  if(item.qty>0 && item.unit!==unit){
+    alert(
+      'Impossible de changer l’unité : il reste '+
+      item.qty+' '+item.unit+
+      ' en stock. Utilisez la même unité ou terminez ce stock avant de changer.'
+    );
+    return;
+  }
+
+  item.unit = unit;
+  item.qty = Number((Number(item.qty)+qty).toFixed(3));
+
+  stockQty.value = '';
+  customUnit.value = '';
+
+  save();
+  alert('Achat ajouté au stock.');
+}
+
+/* AJOUTER UN PRODUIT */
+function addIngredient(){
+  const name = newIng.value.trim();
+  let unit = newUnit.value;
+
+  if(unit==='custom'){
+    unit = newCustomUnit.value.trim();
+  }
+
+  if(!name){
+    alert('Saisissez le nom du produit.');
+    return;
+  }
+
+  if(!unit){
+    alert('Choisissez ou saisissez une unité.');
+    return;
+  }
+
+  const exists = data.ingredients.some(
+    x=>x.name.toLowerCase()===name.toLowerCase()
+  );
+
+  if(exists){
+    alert('Ce produit existe déjà.');
+    return;
+  }
+
+  data.ingredients.push({
+    id:makeId(),
+    name,
+    unit,
+    qty:0
+  });
+
+  newIng.value = '';
+  newCustomUnit.value = '';
+  newUnit.value = 'kg';
+  newCustomUnitBox.classList.add('hidden');
+
+  save();
+  alert('Produit ajouté au stock.');
+}
+
+/* PREPARATION */
+function renderRecipe(){
+  $('recipeFields').innerHTML = data.ingredients.map(x=>`
+    <div class="grid2">
+      <div class="field">
+        <label>${esc(x.name)} utilisés (${esc(x.unit)})</label>
+        <input type="number" min="0" step="0.001"
+          data-ing="${esc(x.id)}" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Stock disponible</label>
+        <input value="${Number(x.qty)} ${esc(x.unit)}" readonly>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPrep(){
+  renderRecipe();
+
+  const preps = todaysPrep();
+
+  $('prepList').innerHTML = preps.length
+    ? preps.slice().reverse().map(p=>`
+        <div class="stockrow">
+          <span>
+            <b>${p.litres} litres préparés</b>
+            <small>${esc(p.time)} · ingrédients déduits du stock</small>
+          </span>
+          <span class="tag">Préparé</span>
+        </div>
+      `).join('')
+    : 'Aucune préparation aujourd’hui';
+}
+
+function savePreparation(){
+  const litres = Number($('prepLitres').value);
+
+  if(!Number.isFinite(litres) || litres<=0){
+    alert('Saisissez le nombre de litres préparés.');
+    return;
+  }
+
+  const used = {};
+
+  for(const input of document.querySelectorAll('[data-ing]')){
+    const qty = Number(input.value)||0;
+    const ingredient = data.ingredients.find(
+      x=>x.id===input.dataset.ing
+    );
+
+    if(!ingredient) continue;
+
+    if(qty<0 || qty>Number(ingredient.qty)){
+      alert(
+        'Stock insuffisant pour : '+ingredient.name+
+        '. Disponible : '+ingredient.qty+' '+ingredient.unit
+      );
+      return;
+    }
+
+    if(qty>0) used[ingredient.id] = qty;
+  }
+
+  Object.entries(used).forEach(([key,qty])=>{
+    const item = data.ingredients.find(x=>x.id===key);
+    item.qty = Number((Number(item.qty)-qty).toFixed(3));
+  });
+
+  const d = new Date();
+
+  data.preps.push({
+    id:makeId(),
+    day:today(),
+    time:d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+    litres,
+    used
+  });
+
+  $('prepLitres').value = '';
+
+  save();
+  alert('Préparation enregistrée. Le stock des ingrédients a été diminué.');
+}
+
+/* VENTES */
+function renderSalesState(){
+  const prepared = totalPreparedToday();
+  const sold = totalMilkSoldToday();
+  const left = milkRemainingToday();
+
+  $('milkLeft').value = left;
+
+  $('milkInfo').textContent = prepared>0
+    ? `${prepared} L préparés aujourd'hui − ${sold} L vendus = ${left} L restants.`
+    : 'Aucune préparation enregistrée aujourd’hui. Enregistrez d’abord la préparation.';
+
+  const sales = salesToday();
+
+  $('salesSummary').innerHTML = sales.length
+    ? sales.slice().reverse().map(x=>`
+        <div class="stockrow">
+          <span>
+            <b>${esc(x.label)}</b>
+            <small>${esc(x.time)}${x.milkLitres?' · '+x.milkLitres+' L de lait utilisés':''}</small>
+          </span>
+          <span class="qty">${money(x.amount)}</span>
+        </div>
+      `).join('')
+    : 'Aucune vente enregistrée';
+}
+
+function saveDailySales(){
+  const milkAmount = Number($('milkMoney').value)||0;
+  const milkLitres = Number($('milkSold').value)||0;
+
+  if(milkAmount<0 || milkLitres<0){
+    alert('Les montants et quantités ne peuvent pas être négatifs.');
+    return;
+  }
+
+  const categories = [
+    ['Couscous','vCouscous'],
+    ['Thi akri','vThi'],
+    ['Mélange lait + thiakri','vMixThi'],
+    ['Mélange lait + couscous','vMixCous'],
+    ['Mélange lait + biscuit','vMixBisc'],
+    ['Eau','vWater']
+  ];
+
+  const entries = [];
+
+  if(milkAmount>0 || milkLitres>0){
+    entries.push({
+      label:'Lait caillé',
+      amount:milkAmount,
+      milkLitres
+    });
+  }
+
+  categories.forEach(([label,elementId])=>{
+    const amount = Number($(elementId).value)||0;
+
+    if(amount>0){
+      entries.push({
+        label,
+        amount,
+        milkLitres:0
+      });
+    }
+  });
+
+  if(!entries.length){
+    alert('Saisissez au moins un montant de vente.');
+    return;
+  }
+
+  const prepared = totalPreparedToday();
+  const alreadySold = totalMilkSoldToday();
+
+  if(milkLitres>0 && prepared<=0){
+    alert('Enregistrez d’abord la quantité de lait caillé préparée aujourd’hui.');
+    return;
+  }
+
+  if(milkLitres+alreadySold>prepared){
+    alert(
+      'La quantité vendue dépasse la quantité préparée. Il reste '+
+      milkRemainingToday()+' L.'
+    );
+    return;
+  }
+
+  const d = new Date();
+
+  entries.forEach(x=>{
+    data.sales.push({
+      id:makeId(),
+      day:today(),
+      time:d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+      ...x
+    });
+  });
+
+  [
+    'milkMoney','milkSold','vCouscous','vThi',
+    'vMixThi','vMixCous','vMixBisc','vWater','vOtherNote'
+  ].forEach(id=>$(id).value='');
+
+  save();
+  alert('Ventes enregistrées. Le lait restant a été recalculé.');
+}
+
+/* DEPENSES */
+function renderExpenses(){
+  const expenses = expToday();
+
+  $('expList').innerHTML = expenses.length
+    ? expenses.slice().reverse().map(x=>`
+        <div class="stockrow">
+          <span>
+            <b>${esc(x.type)}</b>
+            <small>${esc(x.time)}${x.note?' · '+esc(x.note):''}</small>
+          </span>
+          <span class="qty red">${money(x.amount)}</span>
+        </div>
+      `).join('')
+    : 'Aucune dépense aujourd’hui';
+}
+
+function saveExpense(){
+  const amount = Number($('expAmount').value);
+
+  if(!Number.isFinite(amount) || amount<=0){
+    alert('Saisissez un montant de dépense valide.');
+    return;
+  }
+
+  const d = new Date();
+
+  data.expenses.push({
+    id:makeId(),
+    day:today(),
+    time:d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+    type:$('expType').value,
+    amount,
+    note:$('expNote').value
+  });
+
+  $('expAmount').value = '';
+  $('expNote').value = '';
+
+  save();
+  alert('Dépense enregistrée.');
+}
+
+/* HISTORIQUE */
+function renderHistory(){
+  const rows = [
+    ...data.sales.map(x=>({
+      day:x.day,time:x.time,kind:'Vente',
+      label:x.label,amount:x.amount
+    })),
+    ...data.expenses.map(x=>({
+      day:x.day,time:x.time,kind:'Dépense',
+      label:x.type,amount:x.amount
+    }))
+  ].sort((a,b)=>(b.day+b.time).localeCompare(a.day+a.time));
+
+  $('historyRows').innerHTML = rows.length
+    ? rows.map(x=>`
+        <tr>
+          <td>${esc(x.day)} ${esc(x.time)}</td>
+          <td>${esc(x.kind)}</td>
+          <td>${esc(x.label)}</td>
+          <td>${money(x.amount)}</td>
+        </tr>
+      `).join('')
+    : '<tr><td colspan="4" class="empty">Aucune opération</td></tr>';
+}
+
+/* SAUVEGARDE ET RESTAURATION */
+function backup(){
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(
+    new Blob([JSON.stringify(data,null,2)],{type:'application/json'})
+  );
+
+  link.href = url;
+  link.download = 'drame-sow-sauvegarde.json';
+  link.click();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function restore(event){
+  const file = event.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = ()=>{
+    try{
+      const restored = JSON.parse(reader.result);
+
+      if(
+        !Array.isArray(restored.ingredients) ||
+        !Array.isArray(restored.sales) ||
+        !Array.isArray(restored.preps) ||
+        !Array.isArray(restored.expenses)
+      ){
+        throw new Error('Fichier invalide');
+      }
+
+      if(confirm('Remplacer les données actuelles par cette sauvegarde ?')){
+        data = restored;
+        save();
+        alert('Sauvegarde restaurée.');
+      }
+    }catch(e){
+      alert('Fichier de sauvegarde non valide.');
+    }
+  };
+
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+/* DEMARRAGE */
+render();
+</script>
+</body>
+</html>
