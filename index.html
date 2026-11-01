@@ -144,8 +144,13 @@ th{color:var(--muted);background:#f8faf8}
 </nav>
 
 <!-- ACCUEIL -->
+
 <section id="home" class="page on">
-  <div class="title">Aujourd'hui</div>
+
+  <div class="title">Tableau de bord</div>
+  <p class="sub" id="dashboardDate">Vue générale de votre boutique</p>
+
+  <div class="title" style="font-size:16px">Activité du jour</div>
 
   <div class="metrics">
     <div class="metric">
@@ -157,33 +162,95 @@ th{color:var(--muted);background:#f8faf8}
       <b class="red" id="todayExpenses">0 F</b>
     </div>
     <div class="metric">
-      <small>RÉSULTAT DU JOUR</small>
+      <small>BÉNÉFICE DU JOUR</small>
       <b id="todayResult">0 F</b>
     </div>
     <div class="metric">
-      <small>LAIT CAILLÉ RESTANT</small>
+      <small>LAIT RESTANT</small>
       <b id="milkRemain">0 L</b>
     </div>
   </div>
 
-  <div class="card" style="margin-top:13px">
+  <div class="title" style="font-size:16px;margin-top:20px">
+    Résumé du mois
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <small>VENTES DU MOIS</small>
+      <b class="green" id="monthSales">0 F</b>
+    </div>
+    <div class="metric">
+      <small>DÉPENSES DU MOIS</small>
+      <b class="red" id="monthExpenses">0 F</b>
+    </div>
+    <div class="metric">
+      <small>RÉSULTAT DU MOIS</small>
+      <b id="monthResult">0 F</b>
+    </div>
+    <div class="metric">
+      <small>PRÉPARATIONS DU JOUR</small>
+      <b id="prepCount">0</b>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="title">Suivi du lait caillé</div>
+    <div class="grid2">
+      <div class="metric">
+        <small>LITRES PRÉPARÉS</small>
+        <b id="dashPrepared">0 L</b>
+      </div>
+      <div class="metric">
+        <small>LITRES VENDUS</small>
+        <b id="dashSold">0 L</b>
+      </div>
+    </div>
+    <div class="line"></div>
+    <div id="milkProgressText" class="hint">Aucune préparation aujourd'hui</div>
+    <div style="height:12px;background:#e9f0eb;border-radius:20px;overflow:hidden;margin-top:10px">
+      <div id="milkProgress" style="height:100%;width:0%;background:#19834b;border-radius:20px"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Ventes par catégorie aujourd'hui</div>
+    <div id="dashSalesCategories" class="empty">
+      Aucune vente aujourd'hui
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Détail des dépenses aujourd'hui</div>
+    <div id="dashExpenseCategories" class="empty">
+      Aucune dépense aujourd'hui
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">État du stock</div>
+    <div id="dashStock" class="empty">Aucun produit</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Dernières opérations</div>
+    <div id="dashRecent" class="empty">Aucune opération</div>
+  </div>
+
+  <div class="card">
     <div class="title">Actions rapides</div>
     <div class="btnrow">
       <button class="btn" onclick="go('sales')">＋ Enregistrer ventes</button>
       <button class="btn light" onclick="go('prep')">＋ Préparer lait</button>
     </div>
+    <div class="btnrow" style="margin-top:8px">
+      <button class="btn light" onclick="go('stock')">＋ Ajouter stock</button>
+      <button class="btn light" onclick="go('expenses')">＋ Ajouter dépense</button>
+    </div>
   </div>
 
-  <div class="card">
-    <div class="title">Préparation du jour</div>
-    <div id="homePrep" class="empty">Aucune préparation aujourd'hui</div>
-  </div>
-
-  <div class="card">
-    <div class="title">Alertes de stock</div>
-    <div id="homeAlerts" class="empty">Aucune alerte</div>
-  </div>
 </section>
+
 
 <!-- VENTES -->
 <section id="sales" class="page">
