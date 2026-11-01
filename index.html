@@ -120,6 +120,20 @@ th{color:var(--muted);background:#f8faf8}
   .wrap{padding:22px}
   .twocol{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 }
+
+.seg{display:flex;gap:6px;background:#e8efe9;padding:5px;border-radius:12px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:transparent;padding:10px 4px;border-radius:9px;color:#52635a;font-weight:800}
+.seg button.on{background:#fff;color:var(--g);box-shadow:0 2px 8px #0001}
+.acts{display:flex;gap:6px;margin-top:6px;justify-content:flex-end}
+.mini{border:0;border-radius:8px;padding:6px 9px;font-size:12px;font-weight:800;background:var(--pale);color:var(--g);cursor:pointer}
+.mini.del{background:#feeceb;color:var(--red)}
+.modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;padding:14px;z-index:50}
+.mbox{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:460px;max-height:90vh;overflow:auto}
+.bar{height:8px;background:#e9f0eb;border-radius:20px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--g2)}
+.filters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;margin-bottom:10px}
+.filters .field{margin:0}
+@media(max-width:560px){.filters{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 
@@ -148,94 +162,42 @@ th{color:var(--muted);background:#f8faf8}
 <section id="home" class="page on">
 
   <div class="title">Tableau de bord</div>
-  <p class="sub" id="dashboardDate">Vue générale de votre boutique</p>
-
-  <div class="title" style="font-size:16px">Activité du jour</div>
+  <div class="seg" id="periodSeg">
+    <button data-per="day" class="on">Jour</button>
+    <button data-per="week">Semaine</button>
+    <button data-per="month">Mois</button>
+    <button data-per="year">Année</button>
+  </div>
+  <div class="grid2" style="align-items:end;margin-bottom:6px">
+    <div class="field" style="margin:0"><label>Date à afficher</label><input id="dashDay" type="date"></div>
+    <button class="btn light" onclick="$('dashDay').value=today();renderHome()">Aujourd’hui</button>
+  </div>
+  <p class="sub" id="dashboardDate" style="margin-top:10px"></p>
 
   <div class="metrics">
-    <div class="metric">
-      <small>VENTES DU JOUR</small>
-      <b class="green" id="todaySales">0 F</b>
-    </div>
-    <div class="metric">
-      <small>DÉPENSES DU JOUR</small>
-      <b class="red" id="todayExpenses">0 F</b>
-    </div>
-    <div class="metric">
-      <small>BÉNÉFICE DU JOUR</small>
-      <b id="todayResult">0 F</b>
-    </div>
-    <div class="metric">
-      <small>LAIT RESTANT</small>
-      <b id="milkRemain">0 L</b>
-    </div>
-  </div>
-
-  <div class="title" style="font-size:16px;margin-top:20px">
-    Résumé du mois
-  </div>
-
-  <div class="metrics">
-    <div class="metric">
-      <small>VENTES DU MOIS</small>
-      <b class="green" id="monthSales">0 F</b>
-    </div>
-    <div class="metric">
-      <small>DÉPENSES DU MOIS</small>
-      <b class="red" id="monthExpenses">0 F</b>
-    </div>
-    <div class="metric">
-      <small>RÉSULTAT DU MOIS</small>
-      <b id="monthResult">0 F</b>
-    </div>
-    <div class="metric">
-      <small>PRÉPARATIONS DU JOUR</small>
-      <b id="prepCount">0</b>
-    </div>
+    <div class="metric"><small>VENTES</small><b class="green" id="pSales">0 F</b></div>
+    <div class="metric"><small>DÉPENSES</small><b class="red" id="pExpenses">0 F</b></div>
+    <div class="metric"><small>BÉNÉFICE</small><b id="pResult">0 F</b></div>
+    <div class="metric"><small>LAIT RESTANT</small><b id="milkRemain">0 L</b></div>
   </div>
 
   <div class="card" style="margin-top:14px">
     <div class="title">Suivi du lait caillé</div>
     <div class="grid2">
-      <div class="metric">
-        <small>LITRES PRÉPARÉS</small>
-        <b id="dashPrepared">0 L</b>
-      </div>
-      <div class="metric">
-        <small>LITRES VENDUS</small>
-        <b id="dashSold">0 L</b>
-      </div>
+      <div class="metric"><small>LITRES PRÉPARÉS</small><b id="dashPrepared">0 L</b></div>
+      <div class="metric"><small>LITRES VENDUS</small><b id="dashSold">0 L</b></div>
     </div>
     <div class="line"></div>
-    <div id="milkProgressText" class="hint">Aucune préparation aujourd'hui</div>
+    <div id="milkProgressText" class="hint">Aucune préparation sur cette période</div>
     <div style="height:12px;background:#e9f0eb;border-radius:20px;overflow:hidden;margin-top:10px">
       <div id="milkProgress" style="height:100%;width:0%;background:#19834b;border-radius:20px"></div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="title">Ventes par catégorie aujourd'hui</div>
-    <div id="dashSalesCategories" class="empty">
-      Aucune vente aujourd'hui
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="title">Détail des dépenses aujourd'hui</div>
-    <div id="dashExpenseCategories" class="empty">
-      Aucune dépense aujourd'hui
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="title">État du stock</div>
-    <div id="dashStock" class="empty">Aucun produit</div>
-  </div>
-
-  <div class="card">
-    <div class="title">Dernières opérations</div>
-    <div id="dashRecent" class="empty">Aucune opération</div>
-  </div>
+  <div class="card"><div class="title">Ventes par catégorie</div><div id="dashSalesCategories" class="empty">Aucune vente</div></div>
+  <div class="card"><div class="title">Détail des dépenses</div><div id="dashExpenseCategories" class="empty">Aucune dépense</div></div>
+  <div class="card"><div class="title">État du stock</div><div id="dashStock" class="empty">Aucun produit</div></div>
+  <div class="card"><div class="title">Dernières opérations</div><div id="dashRecent" class="empty">Aucune opération</div></div>
 
   <div class="card">
     <div class="title">Actions rapides</div>
@@ -258,7 +220,8 @@ th{color:var(--muted);background:#f8faf8}
   <p class="sub">À la fin de la journée, saisissez une seule somme pour chaque catégorie vendue.</p>
 
   <div class="card">
-    <div class="title">Lait caillé vendu aujourd'hui</div>
+    <div class="field"><label>Date des ventes</label><input id="saleDay" type="date"></div>
+    <div class="title">Lait caillé vendu</div>
 
     <div class="grid2">
       <div class="field">
@@ -324,7 +287,7 @@ th{color:var(--muted);background:#f8faf8}
   </div>
 
   <div class="card">
-    <div class="title">Résumé enregistré aujourd'hui</div>
+    <div class="title">Résumé enregistré à la date choisie</div>
     <div id="salesSummary" class="empty">Aucune vente enregistrée</div>
   </div>
 </section>
@@ -338,6 +301,7 @@ th{color:var(--muted);background:#f8faf8}
   </p>
 
   <div class="card">
+    <div class="field"><label>Date de la préparation</label><input id="prepDay" type="date"></div>
     <div class="field">
       <label>Quantité de lait caillé préparée (litres)</label>
       <input id="prepLitres" type="number" min="0.1" step="0.1" placeholder="Ex. 12">
@@ -355,7 +319,7 @@ th{color:var(--muted);background:#f8faf8}
   </div>
 
   <div class="card">
-    <div class="title">Préparations d'aujourd'hui</div>
+    <div class="title">Préparations de la date choisie</div>
     <div id="prepList" class="empty">Aucune préparation</div>
   </div>
 </section>
@@ -456,6 +420,7 @@ th{color:var(--muted);background:#f8faf8}
   <p class="sub">Les dépenses sont suivies séparément du stock.</p>
 
   <div class="card">
+    <div class="field"><label>Date de la dépense</label><input id="expDay" type="date"></div>
     <div class="field">
       <label>Type de dépense</label>
       <select id="expType">
@@ -487,7 +452,7 @@ th{color:var(--muted);background:#f8faf8}
   </div>
 
   <div class="card">
-    <div class="title">Dépenses du jour</div>
+    <div class="title">Dépenses de la date choisie</div>
     <div id="expList" class="empty">Aucune dépense aujourd'hui</div>
   </div>
 </section>
@@ -497,7 +462,21 @@ th{color:var(--muted);background:#f8faf8}
   <div class="title">Historique</div>
 
   <div class="card">
-    <div class="title">Ventes et dépenses</div>
+    <div class="title">Ventes, dépenses et préparations</div>
+    <div class="filters">
+      <div class="field"><label>Du</label><input type="date" id="hFrom" onchange="renderHistory()"></div>
+      <div class="field"><label>Au</label><input type="date" id="hTo" onchange="renderHistory()"></div>
+      <div class="field"><label>Type</label>
+        <select id="hKind" onchange="renderHistory()">
+          <option value="all">Tout</option><option value="Vente">Ventes</option>
+          <option value="Dépense">Dépenses</option><option value="Préparation">Préparations</option>
+        </select>
+      </div>
+    </div>
+    <div class="btnrow" style="margin-bottom:10px">
+      <button class="btn light" onclick="resetHistory()">Réinitialiser les filtres</button>
+    </div>
+    <div id="histTotals" class="hint" style="margin-bottom:8px"></div>
     <div class="tablewrap">
       <table>
         <thead>
@@ -506,6 +485,7 @@ th{color:var(--muted);background:#f8faf8}
             <th>Opération</th>
             <th>Détail</th>
             <th>Montant</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="historyRows"></tbody>
@@ -523,6 +503,17 @@ th{color:var(--muted);background:#f8faf8}
     </div>
   </div>
 </section>
+
+<div id="modal" class="modal hidden">
+  <div class="mbox">
+    <div class="title" id="mTitle"></div>
+    <div id="mBody"></div>
+    <div class="btnrow" style="margin-top:12px">
+      <button class="btn light" onclick="closeModal()">Annuler</button>
+      <button class="btn" id="mOk">Enregistrer</button>
+    </div>
+  </div>
+</div>
 
 <div class="foot">Drame Sow · Gestion simple · Sauvegarde locale</div>
 </div>
@@ -564,6 +555,7 @@ function loadData(){
       d.preps = Array.isArray(d.preps) ? d.preps : [];
       d.sales = Array.isArray(d.sales) ? d.sales : [];
       d.expenses = Array.isArray(d.expenses) ? d.expenses : [];
+      [d.preps,d.sales,d.expenses].forEach(l=>l.forEach(x=>{ if(!x.id) x.id = makeId(); }));
 
       d.ingredients.forEach(x=>{
         if(!x.id) x.id = makeId();
@@ -636,34 +628,49 @@ document.querySelector('.nav').addEventListener('click',e=>{
   if(b) go(b.dataset.p);
 });
 
+/* PERIODES */
+let period = 'day';
+const PLABEL = {day:'Aujourd’hui',week:'Cette semaine',month:'Ce mois',year:'Cette année'};
+
+function ymd(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function periodRange(p){
+  const v = $('dashDay').value;
+  const n = v ? new Date(v+'T12:00:00') : new Date();
+  let a = new Date(n), b = new Date(n);
+  if(p==='week'){
+    a.setDate(n.getDate()-((n.getDay()+6)%7));
+    b = new Date(a); b.setDate(a.getDate()+6);
+  }else if(p==='month'){
+    a = new Date(n.getFullYear(),n.getMonth(),1);
+    b = new Date(n.getFullYear(),n.getMonth()+1,0);
+  }else if(p==='year'){
+    a = new Date(n.getFullYear(),0,1);
+    b = new Date(n.getFullYear(),11,31);
+  }
+  return [ymd(a),ymd(b)];
+}
+
+function frDate(s){ const [y,m,d] = s.split('-'); return d+'/'+m+'/'+y; }
+function inRange(day,r){ return day>=r[0] && day<=r[1]; }
+
+$('periodSeg').addEventListener('click',e=>{
+  const b = e.target.closest('[data-per]');
+  if(!b) return;
+  period = b.dataset.per;
+  renderHome();
+});
+
 /* CALCULS DU JOUR */
-function todaysPrep(){
-  return data.preps.filter(x=>isToday(x.day));
-}
-
-function totalPreparedToday(){
-  return todaysPrep().reduce((n,p)=>n+(Number(p.litres)||0),0);
-}
-
-function salesToday(){
-  return data.sales.filter(x=>isToday(x.day));
-}
-
-function expToday(){
-  return data.expenses.filter(x=>isToday(x.day));
-}
-
-function totalMilkSoldToday(){
-  return salesToday().reduce((n,x)=>n+(Number(x.milkLitres)||0),0);
-}
-
-function milkRemainingToday(){
-  return Math.max(0,totalPreparedToday()-totalMilkSoldToday());
-}
-
-function sumAmounts(items){
-  return items.reduce((n,x)=>n+(Number(x.amount)||0),0);
-}
+function todaysPrep(){ return data.preps.filter(x=>isToday(x.day)); }
+function totalPreparedToday(){ return todaysPrep().reduce((n,p)=>n+(Number(p.litres)||0),0); }
+function salesToday(){ return data.sales.filter(x=>isToday(x.day)); }
+function expToday(){ return data.expenses.filter(x=>isToday(x.day)); }
+function totalMilkSoldToday(){ return salesToday().reduce((n,x)=>n+(Number(x.milkLitres)||0),0); }
+function milkRemainingToday(){ return Math.max(0,totalPreparedToday()-totalMilkSoldToday()); }
+function sumAmounts(items){ return items.reduce((n,x)=>n+(Number(x.amount)||0),0); }
 
 /* AFFICHAGE GENERAL */
 function render(){
@@ -675,39 +682,77 @@ function render(){
   renderSalesState();
 }
 
+function groupSum(items,key){
+  const m = {};
+  items.forEach(x=>{ m[x[key]] = (m[x[key]]||0)+(Number(x.amount)||0); });
+  return Object.entries(m).sort((a,b)=>b[1]-a[1]);
+}
+
+function barList(entries,cls){
+  const total = entries.reduce((n,e)=>n+e[1],0) || 1;
+  return entries.map(([k,v])=>`
+    <div style="margin-bottom:10px">
+      <div class="stockrow" style="padding:0;border:0">
+        <b>${esc(k)}</b><span class="qty ${cls}">${money(v)}</span>
+      </div>
+      <div class="bar"><i style="width:${Math.round(v/total*100)}%"></i></div>
+    </div>`).join('');
+}
+
 function renderHome(){
-  const sale = sumAmounts(salesToday());
-  const expenses = sumAmounts(expToday());
+  document.querySelectorAll('#periodSeg button').forEach(b=>b.classList.toggle('on',b.dataset.per===period));
 
-  $('todaySales').textContent = money(sale);
-  $('todayExpenses').textContent = money(expenses);
-  $('todayResult').textContent = money(sale-expenses);
-  $('milkRemain').textContent =
-    milkRemainingToday().toLocaleString('fr-FR')+' L';
+  const r = periodRange(period);
+  const sel = $('dashDay').value || today();
+  const isNow = sel===today();
+  $('dashboardDate').textContent = period==='day'
+    ? (isNow ? 'Aujourd’hui · ' : 'Journée du ')+frDate(r[0])
+    : (isNow ? PLABEL[period] : {week:'Semaine',month:'Mois',year:'Année'}[period])+' · du '+frDate(r[0])+' au '+frDate(r[1]);
 
-  const preps = todaysPrep();
-  const prepared = totalPreparedToday();
+  const sales = data.sales.filter(x=>inRange(x.day,r));
+  const exps = data.expenses.filter(x=>inRange(x.day,r));
+  const preps = data.preps.filter(x=>inRange(x.day,r));
 
-  $('homePrep').innerHTML = preps.length
-    ? `<div class="stockrow">
-         <span>
-           <b>${prepared} litres préparés au total</b>
-           <small>${preps.length} préparation(s) aujourd'hui</small>
-         </span>
-         <span class="qty">${milkRemainingToday()} L restants</span>
-       </div>`
-    : 'Aucune préparation aujourd’hui';
+  const s = sumAmounts(sales), e = sumAmounts(exps);
+  $('pSales').textContent = money(s);
+  $('pExpenses').textContent = money(e);
+  $('pResult').textContent = money(s-e);
+  $('pResult').className = (s-e)<0 ? 'red' : 'green';
 
-  const low = data.ingredients.filter(x=>Number(x.qty)<=0);
+  const prepared = preps.reduce((n,p)=>n+(Number(p.litres)||0),0);
+  const sold = sales.reduce((n,x)=>n+(Number(x.milkLitres)||0),0);
+  const left = Math.max(0,prepared-sold);
 
-  $('homeAlerts').innerHTML = low.length
-    ? low.map(x=>`
-        <div class="stockrow">
-          <span>${esc(x.name)}</span>
-          <span class="qty red">Épuisé</span>
-        </div>
-      `).join('')
-    : 'Aucune alerte';
+  $('milkRemain').textContent = left.toLocaleString('fr-FR')+' L';
+  $('dashPrepared').textContent = prepared.toLocaleString('fr-FR')+' L';
+  $('dashSold').textContent = sold.toLocaleString('fr-FR')+' L';
+  $('milkProgressText').textContent = prepared>0
+    ? preps.length+' préparation(s) · '+Math.round(Math.min(100,sold/prepared*100))+' % vendu'
+    : 'Aucune préparation sur cette période';
+  $('milkProgress').style.width = prepared>0 ? Math.min(100,sold/prepared*100)+'%' : '0%';
+
+  $('dashSalesCategories').innerHTML = sales.length
+    ? barList(groupSum(sales,'label'),'green') : 'Aucune vente sur cette période';
+  $('dashExpenseCategories').innerHTML = exps.length
+    ? barList(groupSum(exps,'type'),'red') : 'Aucune dépense sur cette période';
+
+  $('dashStock').innerHTML = data.ingredients.length
+    ? data.ingredients.map(x=>`
+        <div class="stockrow"><span><b>${esc(x.name)}</b></span>
+        <span class="qty ${Number(x.qty)<=0?'red':''}">${Number(x.qty)<=0?'Épuisé':Number(x.qty).toLocaleString('fr-FR')+' '+esc(x.unit)}</span></div>`).join('')
+    : 'Aucun produit';
+
+  const ops = [
+    ...sales.map(x=>({d:x.day,t:x.time,k:'Vente',l:x.label,a:money(x.amount),c:'green'})),
+    ...exps.map(x=>({d:x.day,t:x.time,k:'Dépense',l:x.type,a:money(x.amount),c:'red'})),
+    ...preps.map(x=>({d:x.day,t:x.time,k:'Préparation',l:x.litres+' L',a:'',c:''}))
+  ].sort((a,b)=>(b.d+(b.t||'')).localeCompare(a.d+(a.t||''))).slice(0,6);
+
+  $('dashRecent').innerHTML = ops.length
+    ? ops.map(o=>`
+        <div class="stockrow"><span><b>${esc(o.l)}</b><small>${esc(o.k)} · ${frDate(o.d)} ${esc(o.t||'')}</small></span>
+        <span class="qty ${o.c}">${o.a}</span></div>`).join('')
+    : 'Aucune opération';
 }
 
 /* STOCK ET UNITES */
@@ -744,7 +789,10 @@ function renderStock(){
             <b>${esc(x.name)}</b>
             <small>Unité : ${esc(x.unit)}</small>
           </span>
-          <span class="qty">${Number(x.qty).toLocaleString('fr-FR')} ${esc(x.unit)}</span>
+          <span style="text-align:right">
+            <span class="qty">${Number(x.qty).toLocaleString('fr-FR')} ${esc(x.unit)}</span>
+            ${acts('ing',x.id)}
+          </span>
         </div>
       `).join('')
     : '<div class="empty">Aucun produit dans le stock</div>';
@@ -884,8 +932,11 @@ function renderRecipe(){
 
 function renderPrep(){
   renderRecipe();
+  renderPrepList();
+}
 
-  const preps = todaysPrep();
+function renderPrepList(){
+  const preps = data.preps.filter(x=>x.day===($('prepDay').value||today()));
 
   $('prepList').innerHTML = preps.length
     ? preps.slice().reverse().map(p=>`
@@ -894,7 +945,7 @@ function renderPrep(){
             <b>${p.litres} litres préparés</b>
             <small>${esc(p.time)} · ingrédients déduits du stock</small>
           </span>
-          <span class="tag">Préparé</span>
+          <span style="text-align:right"><span class="tag">Préparé</span>${acts('prep',p.id)}</span>
         </div>
       `).join('')
     : 'Aucune préparation aujourd’hui';
@@ -938,7 +989,7 @@ function savePreparation(){
 
   data.preps.push({
     id:makeId(),
-    day:today(),
+    day:$('prepDay').value||today(),
     time:d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
     litres,
     used
@@ -951,18 +1002,24 @@ function savePreparation(){
 }
 
 /* VENTES */
+function dayMilk(day){
+  const p = data.preps.filter(x=>x.day===day).reduce((n,x)=>n+(Number(x.litres)||0),0);
+  const v = data.sales.filter(x=>x.day===day).reduce((n,x)=>n+(Number(x.milkLitres)||0),0);
+  return {prepared:p,sold:v,left:Math.max(0,p-v)};
+}
+
 function renderSalesState(){
-  const prepared = totalPreparedToday();
-  const sold = totalMilkSoldToday();
-  const left = milkRemainingToday();
+  const day = $('saleDay').value || today();
+  const {prepared,sold,left} = dayMilk(day);
+  const label = day===today() ? 'aujourd’hui' : 'le '+frDate(day);
 
   $('milkLeft').value = left;
 
   $('milkInfo').textContent = prepared>0
-    ? `${prepared} L préparés aujourd'hui − ${sold} L vendus = ${left} L restants.`
-    : 'Aucune préparation enregistrée aujourd’hui. Enregistrez d’abord la préparation.';
+    ? `${prepared} L préparés ${label} − ${sold} L vendus = ${left} L restants.`
+    : `Aucune préparation enregistrée ${label}. Enregistrez d’abord la préparation à cette date.`;
 
-  const sales = salesToday();
+  const sales = data.sales.filter(x=>x.day===day);
 
   $('salesSummary').innerHTML = sales.length
     ? sales.slice().reverse().map(x=>`
@@ -971,10 +1028,10 @@ function renderSalesState(){
             <b>${esc(x.label)}</b>
             <small>${esc(x.time)}${x.milkLitres?' · '+x.milkLitres+' L de lait utilisés':''}</small>
           </span>
-          <span class="qty">${money(x.amount)}</span>
+          <span style="text-align:right"><span class="qty">${money(x.amount)}</span>${acts('sale',x.id)}</span>
         </div>
       `).join('')
-    : 'Aucune vente enregistrée';
+    : 'Aucune vente enregistrée à cette date';
 }
 
 function saveDailySales(){
@@ -1022,18 +1079,20 @@ function saveDailySales(){
     return;
   }
 
-  const prepared = totalPreparedToday();
-  const alreadySold = totalMilkSoldToday();
+  const saleDay = $('saleDay').value || today();
+  const dm = dayMilk(saleDay);
+  const prepared = dm.prepared;
+  const alreadySold = dm.sold;
 
   if(milkLitres>0 && prepared<=0){
-    alert('Enregistrez d’abord la quantité de lait caillé préparée aujourd’hui.');
+    alert('Enregistrez d’abord la quantité de lait caillé préparée à cette date.');
     return;
   }
 
   if(milkLitres+alreadySold>prepared){
     alert(
       'La quantité vendue dépasse la quantité préparée. Il reste '+
-      milkRemainingToday()+' L.'
+      dm.left+' L.'
     );
     return;
   }
@@ -1043,7 +1102,7 @@ function saveDailySales(){
   entries.forEach(x=>{
     data.sales.push({
       id:makeId(),
-      day:today(),
+      day:saleDay,
       time:d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
       ...x
     });
@@ -1060,7 +1119,7 @@ function saveDailySales(){
 
 /* DEPENSES */
 function renderExpenses(){
-  const expenses = expToday();
+  const expenses = data.expenses.filter(x=>x.day===($('expDay').value||today()));
 
   $('expList').innerHTML = expenses.length
     ? expenses.slice().reverse().map(x=>`
@@ -1069,7 +1128,7 @@ function renderExpenses(){
             <b>${esc(x.type)}</b>
             <small>${esc(x.time)}${x.note?' · '+esc(x.note):''}</small>
           </span>
-          <span class="qty red">${money(x.amount)}</span>
+          <span style="text-align:right"><span class="qty red">${money(x.amount)}</span>${acts('exp',x.id)}</span>
         </div>
       `).join('')
     : 'Aucune dépense aujourd’hui';
@@ -1087,7 +1146,7 @@ function saveExpense(){
 
   data.expenses.push({
     id:makeId(),
-    day:today(),
+    day:$('expDay').value||today(),
     time:d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
     type:$('expType').value,
     amount,
@@ -1102,28 +1161,35 @@ function saveExpense(){
 }
 
 /* HISTORIQUE */
+function resetHistory(){
+  $('hFrom').value = ''; $('hTo').value = ''; $('hKind').value = 'all';
+  renderHistory();
+}
+
 function renderHistory(){
+  const from = $('hFrom').value, to = $('hTo').value, kind = $('hKind').value;
+
   const rows = [
-    ...data.sales.map(x=>({
-      day:x.day,time:x.time,kind:'Vente',
-      label:x.label,amount:x.amount
-    })),
-    ...data.expenses.map(x=>({
-      day:x.day,time:x.time,kind:'Dépense',
-      label:x.type,amount:x.amount
-    }))
-  ].sort((a,b)=>(b.day+b.time).localeCompare(a.day+a.time));
+    ...data.sales.map(x=>({id:x.id,k:'sale',day:x.day,time:x.time,kind:'Vente',label:x.label,amount:x.amount})),
+    ...data.expenses.map(x=>({id:x.id,k:'exp',day:x.day,time:x.time,kind:'Dépense',label:x.type,amount:x.amount})),
+    ...data.preps.map(x=>({id:x.id,k:'prep',day:x.day,time:x.time,kind:'Préparation',label:x.litres+' L de lait caillé',amount:null}))
+  ].filter(x=>(!from||x.day>=from)&&(!to||x.day<=to)&&(kind==='all'||x.kind===kind))
+   .sort((a,b)=>(b.day+(b.time||'')).localeCompare(a.day+(a.time||'')));
+
+  const s = rows.filter(x=>x.kind==='Vente').reduce((n,x)=>n+(Number(x.amount)||0),0);
+  const e = rows.filter(x=>x.kind==='Dépense').reduce((n,x)=>n+(Number(x.amount)||0),0);
+  $('histTotals').innerHTML = `Ventes : <b class="green">${money(s)}</b> · Dépenses : <b class="red">${money(e)}</b> · Solde : <b>${money(s-e)}</b> · ${rows.length} opération(s)`;
 
   $('historyRows').innerHTML = rows.length
     ? rows.map(x=>`
         <tr>
-          <td>${esc(x.day)} ${esc(x.time)}</td>
+          <td>${frDate(x.day)} ${esc(x.time||'')}</td>
           <td>${esc(x.kind)}</td>
           <td>${esc(x.label)}</td>
-          <td>${money(x.amount)}</td>
-        </tr>
-      `).join('')
-    : '<tr><td colspan="4" class="empty">Aucune opération</td></tr>';
+          <td>${x.amount===null?'—':money(x.amount)}</td>
+          <td>${acts(x.k,x.id)}</td>
+        </tr>`).join('')
+    : '<tr><td colspan="5" class="empty">Aucune opération</td></tr>';
 }
 
 /* SAUVEGARDE ET RESTAURATION */
@@ -1173,7 +1239,151 @@ function restore(event){
   event.target.value = '';
 }
 
+/* MODIFIER / SUPPRIMER */
+const EXP_TYPES = ['Sac de lait','Sac de sucre','Paquet biscuit','Lait concentré','Eau','Couscous','Mbaxamsa','Transport','Électricité','Autre'];
+const round3 = n => Number(Number(n).toFixed(3));
+
+function acts(kind,id){
+  return `<span class="acts">
+    <button class="mini" onclick="editItem('${kind}','${id}')">Modifier</button>
+    <button class="mini del" onclick="delItem('${kind}','${id}')">Supprimer</button>
+  </span>`;
+}
+
+function fld(id,label,val,type,extra){
+  return `<div class="field"><label>${label}</label><input id="${id}" type="${type||'text'}" value="${esc(val)}" ${extra||''}></div>`;
+}
+
+function openModal(title,body,onOk){
+  $('mTitle').textContent = title;
+  $('mBody').innerHTML = body;
+  $('mOk').onclick = onOk;
+  $('modal').classList.remove('hidden');
+}
+function closeModal(){ $('modal').classList.add('hidden'); }
+
+function milkOk(day,exPrep,exSale,addPrep,addSale){
+  const p = data.preps.filter(x=>x.day===day&&x.id!==exPrep).reduce((n,x)=>n+(Number(x.litres)||0),0)+addPrep;
+  const s = data.sales.filter(x=>x.day===day&&x.id!==exSale).reduce((n,x)=>n+(Number(x.milkLitres)||0),0)+addSale;
+  return s <= p+1e-9;
+}
+const MILKMSG = 'Impossible : le lait vendu dépasserait le lait préparé ce jour-là. Corrigez d’abord les ventes ou préparations liées.';
+
+function editItem(kind,id){
+  if(kind==='sale') return editSale(id);
+  if(kind==='exp') return editExp(id);
+  if(kind==='prep') return editPrep(id);
+  if(kind==='ing') return editIng(id);
+}
+
+function editSale(id){
+  const x = data.sales.find(v=>v.id===id); if(!x) return;
+  const milk = x.label==='Lait caillé';
+  openModal('Modifier la vente',
+    `<p class="hint"><b>${esc(x.label)}</b></p>`+
+    fld('eDay','Date',x.day,'date')+
+    fld('eAmount','Montant (FCFA)',x.amount,'number','min="0"')+
+    (milk?fld('eLitres','Litres vendus',x.milkLitres||0,'number','min="0" step="0.1"'):''),
+    ()=>{
+      const day = $('eDay').value, amount = Number($('eAmount').value);
+      const litres = milk ? (Number($('eLitres').value)||0) : 0;
+      if(!day || !Number.isFinite(amount) || amount<0 || litres<0) return alert('Valeurs invalides.');
+      if(litres>0 && !milkOk(day,null,id,0,litres)) return alert(MILKMSG);
+      x.day = day; x.amount = amount; x.milkLitres = litres;
+      closeModal(); save();
+    });
+}
+
+function editExp(id){
+  const x = data.expenses.find(v=>v.id===id); if(!x) return;
+  const types = EXP_TYPES.includes(x.type) ? EXP_TYPES : [x.type,...EXP_TYPES];
+  openModal('Modifier la dépense',
+    fld('eDay','Date',x.day,'date')+
+    `<div class="field"><label>Type</label><select id="eType">${types.map(t=>`<option ${t===x.type?'selected':''}>${esc(t)}</option>`).join('')}</select></div>`+
+    fld('eAmount','Montant (FCFA)',x.amount,'number','min="1"')+
+    fld('eNote','Note',x.note||''),
+    ()=>{
+      const day = $('eDay').value, amount = Number($('eAmount').value);
+      if(!day || !Number.isFinite(amount) || amount<=0) return alert('Valeurs invalides.');
+      x.day = day; x.type = $('eType').value; x.amount = amount; x.note = $('eNote').value;
+      closeModal(); save();
+    });
+}
+
+function editPrep(id){
+  const p = data.preps.find(v=>v.id===id); if(!p) return;
+  const used = p.used || {};
+  openModal('Modifier la préparation',
+    fld('eDay','Date',p.day,'date')+
+    fld('eLitres','Litres préparés',p.litres,'number','min="0.1" step="0.1"')+
+    `<div class="title" style="font-size:15px">Ingrédients utilisés</div>`+
+    data.ingredients.map(i=>`
+      <div class="field"><label>${esc(i.name)} (${esc(i.unit)}) · disponible : ${round3(Number(i.qty)+(used[i.id]||0))}</label>
+      <input type="number" min="0" step="0.001" data-eing="${esc(i.id)}" value="${used[i.id]||''}" placeholder="0"></div>`).join(''),
+    ()=>{
+      const day = $('eDay').value, litres = Number($('eLitres').value);
+      if(!day || !Number.isFinite(litres) || litres<=0) return alert('Valeurs invalides.');
+      const nu = {};
+      for(const inp of document.querySelectorAll('[data-eing]')){
+        const i = data.ingredients.find(v=>v.id===inp.dataset.eing);
+        const q = Number(inp.value)||0;
+        if(q<0 || q>Number(i.qty)+(used[i.id]||0)+1e-9) return alert('Stock insuffisant pour : '+i.name);
+        if(q>0) nu[i.id] = q;
+      }
+      if(!milkOk(day,id,null,litres,0)) return alert(MILKMSG);
+      if(day!==p.day && !milkOk(p.day,id,null,0,0)) return alert(MILKMSG);
+      data.ingredients.forEach(i=>{ i.qty = round3(Number(i.qty)+(used[i.id]||0)-(nu[i.id]||0)); });
+      p.day = day; p.litres = litres; p.used = nu;
+      closeModal(); save();
+    });
+}
+
+function editIng(id){
+  const x = data.ingredients.find(v=>v.id===id); if(!x) return;
+  openModal('Modifier le produit',
+    fld('eName','Nom du produit',x.name)+
+    fld('eUnit','Unité',x.unit)+
+    fld('eQty','Quantité en stock',x.qty,'number','min="0" step="0.001"'),
+    ()=>{
+      const name = $('eName').value.trim(), unit = $('eUnit').value.trim(), qty = Number($('eQty').value);
+      if(!name || !unit || !Number.isFinite(qty) || qty<0) return alert('Valeurs invalides.');
+      if(data.ingredients.some(v=>v.id!==id && v.name.toLowerCase()===name.toLowerCase())) return alert('Ce produit existe déjà.');
+      x.name = name; x.unit = unit; x.qty = round3(qty);
+      closeModal(); save();
+    });
+}
+
+function delItem(kind,id){
+  if(kind==='sale'){
+    if(!confirm('Supprimer cette vente ?')) return;
+    data.sales = data.sales.filter(v=>v.id!==id);
+  }else if(kind==='exp'){
+    if(!confirm('Supprimer cette dépense ?')) return;
+    data.expenses = data.expenses.filter(v=>v.id!==id);
+  }else if(kind==='prep'){
+    const p = data.preps.find(v=>v.id===id); if(!p) return;
+    if(!milkOk(p.day,id,null,0,0)) return alert(MILKMSG);
+    if(!confirm('Supprimer cette préparation ? Les ingrédients utilisés seront remis dans le stock.')) return;
+    Object.entries(p.used||{}).forEach(([k,q])=>{
+      const i = data.ingredients.find(v=>v.id===k);
+      if(i) i.qty = round3(Number(i.qty)+Number(q));
+    });
+    data.preps = data.preps.filter(v=>v.id!==id);
+  }else if(kind==='ing'){
+    const x = data.ingredients.find(v=>v.id===id); if(!x) return;
+    if(!confirm('Supprimer le produit « '+x.name+' » du stock ?')) return;
+    data.ingredients = data.ingredients.filter(v=>v.id!==id);
+  }
+  save();
+}
+
 /* DEMARRAGE */
+$('dashDay').value = today();
+$('dashDay').addEventListener('change',renderHome);
+['saleDay','prepDay','expDay'].forEach(id=>$(id).value = today());
+$('saleDay').addEventListener('change',renderSalesState);
+$('prepDay').addEventListener('change',renderPrepList);
+$('expDay').addEventListener('change',renderExpenses);
 render();
 </script>
 </body>
